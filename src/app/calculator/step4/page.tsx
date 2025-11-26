@@ -181,6 +181,91 @@ export default function Step4Page() {
         </Card>
       </div>
 
+      {/* Savings Progress Visual */}
+      {results.fvCurrentInvestments !== undefined && results.totalRetirementNeeded && (
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle>Retirement Savings Progress</CardTitle>
+            <CardDescription>
+              Visual representation of your savings journey
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Progress Bar */}
+            <div className="space-y-3">
+              <div className="flex justify-between text-sm">
+                <span className="font-medium">Progress toward retirement goal</span>
+                <span className="font-bold">
+                  {((results.fvCurrentInvestments / results.totalRetirementNeeded) * 100).toFixed(1)}%
+                </span>
+              </div>
+
+              <div className="relative h-10 bg-gray-200 rounded-lg overflow-hidden">
+                {/* Current Investments Bar (Green) */}
+                <div
+                  className="absolute top-0 left-0 h-full bg-green-500 transition-all duration-500"
+                  style={{
+                    width: `${Math.min((results.fvCurrentInvestments / results.totalRetirementNeeded) * 100, 100)}%`
+                  }}
+                >
+                  <div className="h-full flex items-center justify-center text-white font-semibold text-sm px-2">
+                    {results.fvCurrentInvestments > results.totalRetirementNeeded * 0.15 && (
+                      "Current Savings"
+                    )}
+                  </div>
+                </div>
+
+                {/* Savings Gap Indicator (if not 100%) */}
+                {results.fvCurrentInvestments < results.totalRetirementNeeded && (
+                  <div className="absolute top-0 right-0 h-full flex items-center text-gray-600 font-medium text-sm px-2">
+                    Gap to fill
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Breakdown */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="flex items-start space-x-3">
+                <div className="w-4 h-4 bg-green-500 rounded mt-1"></div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Current Path</p>
+                  <p className="text-lg font-bold text-green-600">
+                    ${results.fvCurrentInvestments.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {((results.fvCurrentInvestments / results.totalRetirementNeeded) * 100).toFixed(1)}% of goal
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-3">
+                <div className="w-4 h-4 bg-orange-500 rounded mt-1"></div>
+                <div>
+                  <p className="text-sm font-medium text-gray-900">Savings Needed</p>
+                  <p className="text-lg font-bold text-orange-600">
+                    ${results.savingsGap?.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    {((results.savingsGap! / results.totalRetirementNeeded) * 100).toFixed(1)}% gap remaining
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Total Goal */}
+            <div className="border-t pt-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Total Retirement Goal</span>
+                <span className="text-xl font-bold">
+                  ${results.totalRetirementNeeded.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                </span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Navigation */}
       <div className="mt-8 flex justify-between">
         <Button variant="outline" onClick={() => router.push("/calculator/step3")}>
