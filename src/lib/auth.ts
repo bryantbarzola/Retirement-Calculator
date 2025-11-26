@@ -46,8 +46,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.sub!
+      if (session.user && session.user.email) {
+        // Get the actual Supabase profile ID
+        const supabase = createAdminClient()
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('email', session.user.email)
+          .single()
+
+        if (profile) {
+          session.user.id = profile.id
+        }
       }
       return session
     },

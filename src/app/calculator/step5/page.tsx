@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { useRouter } from "next/navigation"
 import { useCalculatorStore } from "@/store/calculatorStore"
 import { Button } from "@/components/ui/button"
@@ -9,9 +9,11 @@ import { generateContributionSchedule } from "@/lib/calculations/schedule"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import ProgressIndicator from "@/components/ProgressIndicator"
 import { generateRetirementPDF } from "@/lib/pdf/generateRetirementPDF"
+import { SavePlanDialog } from "@/components/SavePlanDialog"
 
 export default function Step5Page() {
   const router = useRouter()
+  const [showSaveDialog, setShowSaveDialog] = useState(false)
   const {
     currentAge,
     retirementAge,
@@ -277,7 +279,7 @@ export default function Step5Page() {
           <Button variant="outline" onClick={handleExportPDF}>
             📄 Export PDF
           </Button>
-          <Button variant="outline" onClick={() => router.push("/dashboard")}>
+          <Button variant="outline" onClick={() => setShowSaveDialog(true)}>
             Save Plan
           </Button>
           <Button onClick={() => router.push("/dashboard")}>
@@ -285,6 +287,9 @@ export default function Step5Page() {
           </Button>
         </div>
       </div>
+
+      {/* Save Plan Dialog */}
+      <SavePlanDialog open={showSaveDialog} onOpenChange={setShowSaveDialog} />
     </div>
   )
 }

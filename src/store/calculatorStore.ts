@@ -48,6 +48,7 @@ export interface CalculatorState {
   setStep3Data: (expectedReturn: number) => void
   setStep4Data: (currentInvestments: number) => void
   setResults: (results: CalculatorState['results']) => void
+  loadPlan: (planData: Omit<CalculatorState, 'addExpense' | 'removeExpense' | 'updateExpense' | 'setStep2Data' | 'setStep3Data' | 'setStep4Data' | 'setResults' | 'reset' | 'loadPlan'>) => void
   reset: () => void
 }
 
@@ -122,6 +123,20 @@ export const useCalculatorStore = create<CalculatorState>()(
 
       setResults: (results) => {
         set({ results })
+      },
+
+      loadPlan: (planData) => {
+        set({
+          expenses: planData.expenses,
+          totalMonthlyBudget: planData.totalMonthlyBudget,
+          currentAge: planData.currentAge,
+          retirementAge: planData.retirementAge,
+          lifeExpectancy: planData.lifeExpectancy,
+          inflationRate: planData.inflationRate,
+          expectedReturn: planData.expectedReturn,
+          currentInvestments: planData.currentInvestments,
+          results: planData.results,
+        })
       },
 
       reset: () => {

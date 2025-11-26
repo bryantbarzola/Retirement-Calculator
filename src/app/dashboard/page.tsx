@@ -2,13 +2,17 @@ import { auth, signOut } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { getUserPlans } from "@/lib/supabase/retirementPlans"
+import { PlansList } from "@/components/PlansList"
 
 export default async function DashboardPage() {
   const session = await auth()
 
-  if (!session?.user) {
+  if (!session?.user?.id) {
     redirect("/login")
   }
+
+  const plans = await getUserPlans(session.user.id)
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -33,13 +37,20 @@ export default async function DashboardPage() {
       </div>
 
       <div className="bg-white border rounded-lg p-6">
-        <h2 className="text-xl font-semibold mb-4">Your Retirement Plans</h2>
-        <p className="text-gray-600 mb-4">
-          No plans yet. Create your first retirement plan to get started!
-        </p>
-        <Link href="/calculator/step1">
-          <Button>Start New Retirement Plan</Button>
-        </Link>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold">Your Retirement Plans</h2>
+          <Link href="/calculator/step1">
+            <Button>+ New Plan</Button>
+          </Link>
+        </div>
+
+        {plans.length === 0 ? (
+          <p className="text-gray-600 text-center py-8">
+            No plans yet. Create your first retirement plan to get started!
+          </p>
+        ) : (
+          <PlansList plans={plans} />
+        )}
       </div>
     </div>
   )
