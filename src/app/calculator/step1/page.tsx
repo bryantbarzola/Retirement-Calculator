@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { useRouter } from "next/navigation"
 import { useCalculatorStore } from "@/store/calculatorStore"
 import { Button } from "@/components/ui/button"
@@ -8,6 +8,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import ProgressIndicator from "@/components/ProgressIndicator"
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts'
+
+const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316']
 
 export default function Step1Page() {
   const router = useRouter()
@@ -15,6 +18,15 @@ export default function Step1Page() {
 
   const [category, setCategory] = useState("")
   const [amount, setAmount] = useState("")
+
+  // Prepare data for pie chart
+  const chartData = useMemo(() => {
+    return expenses.map((expense) => ({
+      name: expense.category,
+      value: expense.amount,
+      percentage: ((expense.amount / totalMonthlyBudget) * 100).toFixed(1)
+    }))
+  }, [expenses, totalMonthlyBudget])
 
   const handleAddExpense = (e: React.FormEvent) => {
     e.preventDefault()
@@ -128,6 +140,43 @@ export default function Step1Page() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Expense Breakdown Chart */}
+      {expenses.length > 0 && (
+        <Card className="mt-6">
+          <CardHeader>
+            <CardTitle>Expense Breakdown</CardTitle>
+            <CardDescription>
+              Visual breakdown of your monthly budget by category
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={400}>
+              <PieChart>
+                <Pie
+                  data={chartData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, percentage }) => `${name} (${percentage}%)`}
+                  outerRadius={120}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {chartData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  formatter={(value: number) => `$${value.toLocaleString()}`}
+                  contentStyle={{ borderRadius: '8px', border: '1px solid #e5e7eb' }}
+                />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Navigation */}
       <div className="mt-8 flex justify-between">
