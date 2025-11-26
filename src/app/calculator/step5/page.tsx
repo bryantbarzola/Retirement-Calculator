@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { generateContributionSchedule } from "@/lib/calculations/schedule"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import ProgressIndicator from "@/components/ProgressIndicator"
+import { generateRetirementPDF } from "@/lib/pdf/generateRetirementPDF"
 
 export default function Step5Page() {
   const router = useRouter()
@@ -37,6 +38,35 @@ export default function Step5Page() {
 
   const yearsToRetirement = retirementAge - currentAge
   const yearsInRetirement = lifeExpectancy - retirementAge
+
+  const handleExportPDF = () => {
+    if (!results.futureMonthlyBudget || !results.monthlySavingsGoal) {
+      alert("Please complete all calculator steps before exporting")
+      return
+    }
+
+    try {
+      const pdfData = {
+        totalMonthlyBudget,
+        futureMonthlyBudget: results.futureMonthlyBudget,
+        currentAge,
+        retirementAge,
+        lifeExpectancy,
+        inflationRate,
+        expectedReturn,
+        currentInvestments,
+        totalRetirementNeeded: results.totalRetirementNeeded || 0,
+        monthlySavingsGoal: results.monthlySavingsGoal,
+        annualSavingsGoal: results.annualSavingsGoal || 0,
+        schedule
+      }
+
+      generateRetirementPDF(pdfData)
+    } catch (error) {
+      console.error('PDF generation failed:', error)
+      alert('Failed to generate PDF. Please try again.')
+    }
+  }
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -141,13 +171,13 @@ export default function Step5Page() {
       </Card>
 
       {/* Plan Details */}
-      <div className="grid gap-6 md:grid-cols-2 mb-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Plan Assumptions</CardTitle>
-            <CardDescription>Key parameters for your retirement plan</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Plan Assumptions</CardTitle>
+          <CardDescription>Key parameters for your retirement plan</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid md:grid-cols-2 gap-x-8 gap-y-3">
             <div className="flex justify-between">
               <span className="text-sm text-gray-600">Current Age</span>
               <span className="font-semibold">{currentAge}</span>
@@ -168,38 +198,21 @@ export default function Step5Page() {
               <span className="text-sm text-gray-600">Years in Retirement</span>
               <span className="font-semibold">{yearsInRetirement} years</span>
             </div>
+            <div className="flex justify-between">
+              <span className="text-sm text-gray-600">Monthly Expenses</span>
+              <span className="font-semibold">${totalMonthlyBudget.toLocaleString()}</span>
+            </div>
             <div className="flex justify-between border-t pt-3">
               <span className="text-sm text-gray-600">Expected Return</span>
               <span className="font-semibold">{(expectedReturn * 100).toFixed(1)}%</span>
             </div>
-            <div className="flex justify-between">
+            <div className="flex justify-between border-t pt-3">
               <span className="text-sm text-gray-600">Inflation Rate</span>
               <span className="font-semibold">{(inflationRate * 100).toFixed(1)}%</span>
             </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Monthly Expenses</CardTitle>
-            <CardDescription>Your current budget breakdown</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2 max-h-[250px] overflow-y-auto">
-              {expenses.map((expense) => (
-                <div key={expense.id} className="flex justify-between text-sm">
-                  <span className="text-gray-600">{expense.category}</span>
-                  <span className="font-semibold">${expense.amount.toLocaleString()}</span>
-                </div>
-              ))}
-              <div className="flex justify-between border-t pt-2 font-semibold">
-                <span>Total</span>
-                <span>${totalMonthlyBudget.toLocaleString()}</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Contribution Schedule */}
       <Card>
@@ -261,6 +274,9 @@ export default function Step5Page() {
           ← Back
         </Button>
         <div className="space-x-2">
+          <Button variant="outline" onClick={handleExportPDF}>
+            📄 Export PDF
+          </Button>
           <Button variant="outline" onClick={() => router.push("/dashboard")}>
             Save Plan
           </Button>
