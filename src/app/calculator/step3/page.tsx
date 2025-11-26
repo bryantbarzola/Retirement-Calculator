@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { calculatePVGrowingAnnuity } from "@/lib/calculations/netPresentValue"
+import ProgressIndicator from "@/components/ProgressIndicator"
 
 export default function Step3Page() {
   const router = useRouter()
@@ -64,6 +65,8 @@ export default function Step3Page() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <ProgressIndicator currentStep={3} />
+
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Step 3: Total Amount Needed</h1>
         <p className="text-gray-600">

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { generateContributionSchedule } from "@/lib/calculations/schedule"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import ProgressIndicator from "@/components/ProgressIndicator"
 
 export default function Step5Page() {
   const router = useRouter()
@@ -39,6 +40,8 @@ export default function Step5Page() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <ProgressIndicator currentStep={5} />
+
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Step 5: Your Retirement Plan</h1>
         <p className="text-gray-600">

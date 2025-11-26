@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { calculateFutureValue, calculateFutureAnnualValue } from "@/lib/calculations/futureValue"
+import ProgressIndicator from "@/components/ProgressIndicator"
 
 export default function Step2Page() {
   const router = useRouter()
@@ -81,6 +82,8 @@ export default function Step2Page() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <ProgressIndicator currentStep={2} />
+
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Step 2: Future Value</h1>
         <p className="text-gray-600">

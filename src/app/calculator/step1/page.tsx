@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import ProgressIndicator from "@/components/ProgressIndicator"
 
 export default function Step1Page() {
   const router = useRouter()
@@ -38,6 +39,8 @@ export default function Step1Page() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <ProgressIndicator currentStep={1} />
+
       <div className="mb-8">
         <h1 className="text-3xl font-bold mb-2">Step 1: Monthly Budget</h1>
         <p className="text-gray-600">
