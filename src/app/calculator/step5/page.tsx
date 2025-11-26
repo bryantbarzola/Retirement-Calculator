@@ -6,6 +6,7 @@ import { useCalculatorStore } from "@/store/calculatorStore"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { generateContributionSchedule } from "@/lib/calculations/schedule"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 export default function Step5Page() {
   const router = useRouter()
@@ -89,6 +90,52 @@ export default function Step5Page() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Growth Chart */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Savings Growth Projection</CardTitle>
+          <CardDescription>
+            Watch your retirement savings grow over the next {yearsToRetirement} years
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={schedule} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="year"
+                label={{ value: 'Year', position: 'insideBottom', offset: -5 }}
+              />
+              <YAxis
+                label={{ value: 'Balance ($)', angle: -90, position: 'insideLeft' }}
+                tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
+              />
+              <Tooltip
+                formatter={(value: number) => `$${value.toLocaleString(undefined, { maximumFractionDigits: 0 })}`}
+                labelFormatter={(label) => `Year ${label}`}
+              />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="endingBalance"
+                stroke="#2563eb"
+                strokeWidth={2}
+                name="Total Balance"
+                dot={{ fill: '#2563eb', r: 3 }}
+              />
+              <Line
+                type="monotone"
+                dataKey="contribution"
+                stroke="#16a34a"
+                strokeWidth={2}
+                name="Annual Contribution"
+                dot={false}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
 
       {/* Plan Details */}
       <div className="grid gap-6 md:grid-cols-2 mb-6">
