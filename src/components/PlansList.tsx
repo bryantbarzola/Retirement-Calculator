@@ -71,7 +71,7 @@ export function PlansList({ plans }: PlansListProps) {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4 text-sm">
               <div>
                 <p className="text-gray-600">Monthly Budget</p>
                 <p className="font-semibold">
@@ -96,7 +96,7 @@ export function PlansList({ plans }: PlansListProps) {
               </div>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <Button
                 onClick={() => handleLoadPlan(plan)}
                 className="flex-1"
@@ -107,6 +107,7 @@ export function PlansList({ plans }: PlansListProps) {
                 variant="outline"
                 onClick={() => handleDeletePlan(plan.id)}
                 disabled={deletingId === plan.id}
+                className="sm:w-auto"
               >
                 {deletingId === plan.id ? "Deleting..." : "Delete"}
               </Button>

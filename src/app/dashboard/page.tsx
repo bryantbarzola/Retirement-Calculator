@@ -1,9 +1,9 @@
 import { auth, signOut } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
 import { getUserPlans } from "@/lib/supabase/retirementPlans"
 import { PlansList } from "@/components/PlansList"
+import { NewPlanButton } from "@/components/NewPlanButton"
 
 export default async function DashboardPage() {
   const session = await auth()
@@ -16,7 +16,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-bold">Dashboard</h1>
           <p className="text-gray-600 mt-2">
@@ -30,18 +30,16 @@ export default async function DashboardPage() {
             await signOut({ redirectTo: "/" })
           }}
         >
-          <Button type="submit" variant="outline">
+          <Button type="submit" variant="outline" className="w-full sm:w-auto">
             Sign Out
           </Button>
         </form>
       </div>
 
       <div className="bg-white border rounded-lg p-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
           <h2 className="text-xl font-semibold">Your Retirement Plans</h2>
-          <Link href="/calculator/step1">
-            <Button>+ New Plan</Button>
-          </Link>
+          <NewPlanButton className="w-full sm:w-auto">+ New Plan</NewPlanButton>
         </div>
 
         {plans.length === 0 ? (

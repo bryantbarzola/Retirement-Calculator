@@ -1,21 +1,40 @@
-import Link from "next/link";
+"use client"
+
+import { useSession } from "next-auth/react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 export default function Header() {
+  const { data: session, status } = useSession()
+
   return (
-    <header className="border-b">
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <Link href="/" className="text-xl font-bold">
-          Retirement Calculator
-        </Link>
-        <nav className="flex gap-6">
-          <Link href="/" className="text-sm hover:underline">
-            Home
+    <header className="border-b bg-white">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          <Link href="/" className="text-xl font-bold text-black">
+            Retirement Calculator
           </Link>
-          <Link href="/dashboard" className="text-sm hover:underline">
-            Dashboard
-          </Link>
-        </nav>
+
+          <nav className="flex items-center gap-4">
+            {status === "loading" ? (
+              <div className="text-sm text-gray-500">Loading...</div>
+            ) : session ? (
+              <>
+                <Link href="/dashboard">
+                  <Button variant="ghost">Dashboard</Button>
+                </Link>
+                <span className="text-sm text-gray-600 hidden sm:inline">
+                  {session.user?.name}
+                </span>
+              </>
+            ) : (
+              <Link href="/login">
+                <Button>Sign In</Button>
+              </Link>
+            )}
+          </nav>
+        </div>
       </div>
     </header>
-  );
+  )
 }

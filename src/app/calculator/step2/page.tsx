@@ -91,7 +91,7 @@ export default function Step2Page() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
         {/* Input Form */}
         <Card>
           <CardHeader>
@@ -202,11 +202,11 @@ export default function Step2Page() {
       </div>
 
       {/* Navigation */}
-      <div className="mt-8 flex justify-between">
-        <Button variant="outline" onClick={() => router.push("/calculator/step1")}>
+      <div className="mt-8 flex flex-col sm:flex-row gap-4 sm:justify-between">
+        <Button variant="outline" onClick={() => router.push("/calculator/step1")} className="w-full sm:w-auto">
           ← Back
         </Button>
-        <Button onClick={handleNext}>
+        <Button onClick={handleNext} className="w-full sm:w-auto">
           Next: Total Needed →
         </Button>
       </div>

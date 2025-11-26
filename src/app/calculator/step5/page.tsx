@@ -82,7 +82,7 @@ export default function Step5Page() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid gap-4 md:grid-cols-4 mb-6">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-6">
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-gray-600">Monthly Budget Today</CardTitle>
@@ -179,7 +179,7 @@ export default function Step5Page() {
           <CardDescription>Key parameters for your retirement plan</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="grid md:grid-cols-2 gap-x-8 gap-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
             <div className="flex justify-between">
               <span className="text-sm text-gray-600">Current Age</span>
               <span className="font-semibold">{currentAge}</span>
@@ -225,8 +225,8 @@ export default function Step5Page() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+          <div className="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0">
+            <table className="w-full text-sm min-w-[600px]">
               <thead className="border-b">
                 <tr className="text-left">
                   <th className="pb-2 font-semibold">Year</th>
@@ -271,18 +271,18 @@ export default function Step5Page() {
       </Card>
 
       {/* Navigation */}
-      <div className="mt-8 flex justify-between">
-        <Button variant="outline" onClick={() => router.push("/calculator/step4")}>
+      <div className="mt-8 flex flex-col sm:flex-row gap-4 sm:justify-between">
+        <Button variant="outline" onClick={() => router.push("/calculator/step4")} className="w-full sm:w-auto">
           ← Back
         </Button>
-        <div className="space-x-2">
-          <Button variant="outline" onClick={handleExportPDF}>
+        <div className="flex flex-col sm:flex-row gap-2 sm:space-x-2">
+          <Button variant="outline" onClick={handleExportPDF} className="w-full sm:w-auto">
             📄 Export PDF
           </Button>
-          <Button variant="outline" onClick={() => setShowSaveDialog(true)}>
+          <Button variant="outline" onClick={() => setShowSaveDialog(true)} className="w-full sm:w-auto">
             Save Plan
           </Button>
-          <Button onClick={() => router.push("/dashboard")}>
+          <Button onClick={() => router.push("/dashboard")} className="w-full sm:w-auto">
             Complete →
           </Button>
         </div>

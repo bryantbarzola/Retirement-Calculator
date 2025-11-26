@@ -60,7 +60,7 @@ export default function Step1Page() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
         {/* Add Expense Form */}
         <Card>
           <CardHeader>
@@ -179,11 +179,11 @@ export default function Step1Page() {
       )}
 
       {/* Navigation */}
-      <div className="mt-8 flex justify-between">
-        <Button variant="outline" onClick={() => router.push("/dashboard")}>
+      <div className="mt-8 flex flex-col sm:flex-row gap-4 sm:justify-between">
+        <Button variant="outline" onClick={() => router.push("/")} className="w-full sm:w-auto">
           Cancel
         </Button>
-        <Button onClick={handleNext} disabled={expenses.length === 0}>
+        <Button onClick={handleNext} disabled={expenses.length === 0} className="w-full sm:w-auto">
           Next: Future Value →
         </Button>
       </div>

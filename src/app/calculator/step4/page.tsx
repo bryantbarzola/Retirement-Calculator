@@ -77,7 +77,7 @@ export default function Step4Page() {
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
         {/* Input Form */}
         <Card>
           <CardHeader>
@@ -225,7 +225,7 @@ export default function Step4Page() {
             </div>
 
             {/* Breakdown */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex items-start space-x-3">
                 <div className="w-4 h-4 bg-green-500 rounded mt-1"></div>
                 <div>
@@ -267,11 +267,11 @@ export default function Step4Page() {
       )}
 
       {/* Navigation */}
-      <div className="mt-8 flex justify-between">
-        <Button variant="outline" onClick={() => router.push("/calculator/step3")}>
+      <div className="mt-8 flex flex-col sm:flex-row gap-4 sm:justify-between">
+        <Button variant="outline" onClick={() => router.push("/calculator/step3")} className="w-full sm:w-auto">
           ← Back
         </Button>
-        <Button onClick={handleNext} disabled={!results.monthlySavingsGoal}>
+        <Button onClick={handleNext} disabled={!results.monthlySavingsGoal} className="w-full sm:w-auto">
           Next: Savings Plan →
         </Button>
       </div>

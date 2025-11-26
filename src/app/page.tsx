@@ -10,7 +10,7 @@ export default function Home() {
           <p className="text-lg text-gray-600">
             Plan your retirement with confidence
           </p>
-          <Link href="/login">
+          <Link href="/calculator/step1">
             <Button size="lg">Get Started</Button>
           </Link>
         </div>
